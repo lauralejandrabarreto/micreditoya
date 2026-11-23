@@ -6,7 +6,7 @@ Proyecto académico · Tema: Google data y modelo supervisado (árboles de decis
 
 ## Ver en línea
 
-- **Sitio del proyecto:** `https://<usuario>.github.io/<repositorio>/` (GitHub Pages)
+- **Sitio del proyecto:** `https://lauralejandrabarreto.github.io/micreditoya/` (GitHub Pages)
 - **Presentación:** carpeta `presentacion/`
 - **Simulador:** carpeta `simulador/` (consulta la API publicada en Render)
 
