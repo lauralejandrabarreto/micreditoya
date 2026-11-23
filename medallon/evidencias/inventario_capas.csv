@@ -1,0 +1,12 @@
+capa,entidad,registros,columnas
+Bronce,loan_train_bronce.csv (train.csv Kaggle),614,13
+Bronce,DATA_SET_bronce.xlsx (test.csv Kaggle),367,12
+Plata,loan_clasificacion_limpio.csv,614,19
+Plata,loan_regresion_limpio.csv,592,16
+Plata,loan_test_plata.csv,367,18
+Oro,oro_tasa_aprobacion_historial,3,5
+Oro,oro_monto_promedio_zona,3,6
+Oro,oro_distribucion_cuota_ingreso,6,4
+Oro,oro_scoring_solicitudes_nuevas,367,12
+Oro,oro_desembolso_por_zona,6,4
+Oro,oro_kpis,7,3

@@ -1,0 +1,7 @@
+rango_cuota_ingreso,solicitudes,tasa_aprobacion_pct,porcentaje_solicitudes
+0-5 %,106,66.0,17.3
+5-10 %,446,72.0,72.6
+10-15 %,38,47.4,6.2
+15-20 %,14,42.9,2.3
+20-30 %,6,83.3,1.0
+más de 30 %,4,50.0,0.7

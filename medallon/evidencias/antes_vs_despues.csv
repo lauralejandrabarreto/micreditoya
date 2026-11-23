@@ -1,0 +1,8 @@
+columna,nulos_bronce_train,nulos_bronce_test,tecnica,nulos_plata_train,nulos_plata_test
+Gender,13,11,Moda,0,0
+Married,3,0,Moda,0,0
+Dependents,15,10,Moda + '3+' convertido a 3,0,0
+Self_Employed,32,23,Moda,0,0
+Loan_Amount_Term,14,6,Moda (360 meses),0,0
+LoanAmount,22,5,Mediana (por educación y empleo en train; mediana global en test),0,0
+Credit_History,50,29,Train: categoría propia −1 «sin registro» · Test: moda (1),0,0

@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MiCreditoYA | Simulador de crédito</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --brand: #820AD1;
+      --brand-dark: #530082;
+      --brand-soft: #F3E6FE;
+      --brand-band: #EBD7FB;
+      --ink: #1E1E24;
+      --muted: #5F6070;
+      --line: #D9D9E0;
+      --bg: #F5F5F7;
+      --white: #FFFFFF;
+      --green: #00875A;
+      --green-soft: #E3F5EC;
+      --red: #B42318;
+      --red-soft: #FDECEA;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: var(--bg); color: var(--ink); line-height: 1.45; }
+
+    /* Barra superior */
+    .topbar { background: var(--white); border-bottom: 1px solid #ECECF1; }
+    .topbar .in { max-width: 1120px; margin: 0 auto; height: 72px; padding: 0 24px; display: flex; align-items: center; justify-content: space-between; }
+    .logo { display: flex; align-items: center; gap: 10px; font-weight: 800; font-size: 1.35rem; letter-spacing: -0.5px; color: var(--ink); }
+    .logo .mark { width: 32px; height: 32px; border-radius: 9px; background: var(--brand); position: relative; }
+    .logo .mark::after { content: ""; position: absolute; left: 8px; top: 9px; width: 16px; height: 14px; border-left: 4px solid #fff; border-bottom: 4px solid #fff; transform: skewX(-12deg); }
+    .logo .txt { color: var(--ink); }
+    .logo .txt span { color: var(--brand); }
+    .top-link { font-size: 0.9rem; color: var(--muted); display: flex; align-items: center; gap: 6px; }
+    .top-link b { width: 8px; height: 8px; border-radius: 50%; background: var(--green); display: inline-block; }
+
+    /* Encabezado */
+    .hero { text-align: center; padding: 40px 24px 26px; }
+    .hero h1 { font-size: clamp(1.6rem, 3.4vw, 2.3rem); font-weight: 800; letter-spacing: -0.6px; margin-bottom: 10px; }
+    .hero p { color: var(--muted); max-width: 560px; margin: 0 auto; font-size: 1rem; }
+
+    /* Franja de características */
+    .band { max-width: 1060px; margin: 0 auto; background: var(--brand-band); border-radius: 4px; padding: 26px 24px 18px; }
+    .band h2 { text-align: center; font-size: 1.3rem; margin-bottom: 18px; }
+    .feats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; text-align: center; }
+    .feat svg { width: 40px; height: 40px; stroke: var(--ink); fill: none; stroke-width: 1.6; margin-bottom: 6px; }
+    .feat small { display: block; font-size: 0.9rem; color: var(--ink); }
+    .feat strong { font-size: 1rem; }
+    .band .legal { text-align: center; font-size: 0.85rem; color: #3E3E4A; margin-top: 16px; }
+
+    /* Formulario */
+    .wrap { max-width: 760px; margin: 0 auto; padding: 34px 24px 60px; }
+    .step { font-size: 0.78rem; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--brand); margin-bottom: 6px; }
+    .q { font-size: 1.5rem; font-weight: 800; letter-spacing: -0.4px; margin-bottom: 18px; }
+    .money { display: flex; align-items: baseline; gap: 6px; border-bottom: 2px solid var(--ink); padding-bottom: 4px; }
+    .money span { font-size: 2.1rem; font-weight: 800; }
+    .money input { border: 0; background: transparent; font: inherit; font-size: 2.3rem; font-weight: 800; color: var(--ink); width: 100%; outline: none; letter-spacing: -0.5px; }
+    .money:focus-within { border-bottom-color: var(--brand); }
+    .help { font-size: 0.8rem; color: var(--muted); margin-top: 6px; }
+    .help.err { color: var(--red); font-weight: 600; }
+    .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 26px 32px; margin-top: 30px; }
+    .field label { display: block; font-size: 0.95rem; font-weight: 700; margin-bottom: 6px; }
+    .field input, .field select { width: 100%; border: 0; border-bottom: 1.5px solid var(--ink); background: transparent; font: inherit; font-size: 1.15rem; font-weight: 600; color: var(--ink); padding: 6px 0; outline: none; border-radius: 0; }
+    .field select { cursor: pointer; }
+    .field input:focus, .field select:focus { border-bottom-color: var(--brand); border-bottom-width: 2px; }
+    .field .money-sm { display: flex; align-items: baseline; gap: 4px; border-bottom: 1.5px solid var(--ink); }
+    .field .money-sm:focus-within { border-bottom-color: var(--brand); border-bottom-width: 2px; }
+    .field .money-sm span { font-weight: 700; font-size: 1.15rem; }
+    .field .money-sm input { border: 0; }
+    .field.full { grid-column: 1 / -1; }
+    .demo-field { background: var(--brand-soft); border-radius: 10px; padding: 14px 16px; }
+    .tag-demo { font-size: 0.7rem; font-weight: 700; letter-spacing: .6px; text-transform: uppercase; background: var(--brand); color: #fff; padding: 2px 8px; border-radius: 999px; margin-left: 6px; vertical-align: middle; }
+    .actions { text-align: center; margin-top: 40px; }
+    .btn { display: inline-block; min-width: 240px; padding: 15px 34px; border: 0; border-radius: 999px; background: var(--brand); color: #fff; font: inherit; font-weight: 800; font-size: 1rem; letter-spacing: 0.4px; text-transform: uppercase; cursor: pointer; transition: background .2s; }
+    .btn:hover { background: var(--brand-dark); }
+    .btn:disabled { opacity: .6; cursor: wait; }
+    .btn.sec { background: transparent; color: var(--brand); border: 2px solid var(--brand); }
+    .btn.sec:hover { background: var(--brand-soft); }
+    .btn:focus-visible { outline: 3px solid var(--brand-dark); outline-offset: 3px; }
+
+    /* Cargando */
+    .loader { display: none; text-align: center; padding: 50px 10px; }
+    .spinner { width: 46px; height: 46px; border: 4px solid var(--brand-soft); border-top-color: var(--brand); border-radius: 50%; animation: spin .8s linear infinite; margin: 0 auto 14px; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .loader p { font-weight: 600; color: var(--brand-dark); }
+
+    /* Resultado */
+    .result { display: none; max-width: 1060px; margin: 0 auto; padding: 10px 24px 60px; }
+    .result .intro { text-align: center; margin-bottom: 22px; }
+    .result .intro p { color: var(--muted); }
+    .pill { display: inline-block; font-size: 0.78rem; font-weight: 700; letter-spacing: .6px; text-transform: uppercase; padding: 5px 12px; border-radius: 999px; margin-bottom: 10px; }
+    .pill.ok { background: var(--brand-soft); color: var(--brand-dark); }
+    .pill.micro { background: var(--green-soft); color: var(--green); }
+    .result h2 { font-size: 1.5rem; font-weight: 800; letter-spacing: -0.4px; margin-bottom: 6px; }
+    .cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+    .card { background: var(--white); border-radius: 10px; box-shadow: 0 4px 16px rgba(20, 20, 40, .08); overflow: hidden; display: flex; flex-direction: column; }
+    .card .head { background: var(--ink); color: #fff; text-align: center; font-weight: 700; padding: 9px 12px; font-size: 0.95rem; }
+    .card.main .head { background: var(--brand); }
+    .card .body { padding: 16px 18px 6px; }
+    .card .lbl { font-size: 0.85rem; color: var(--ink); font-weight: 600; }
+    .card .val { font-size: 1.45rem; font-weight: 800; letter-spacing: -0.3px; }
+    .card .box { background: #F1F1F4; padding: 14px 18px; margin-top: 10px; flex: 1; }
+    .card .box p { font-size: 0.92rem; color: #3E3E4A; }
+    .card .box .big { font-size: 2rem; font-weight: 800; color: var(--ink); letter-spacing: -0.6px; margin-top: 2px; }
+    .card .foot { padding: 12px 18px; border-top: 1px solid #ECECF1; font-size: 0.85rem; color: var(--muted); }
+    .msg { background: var(--white); border-radius: 10px; border-left: 5px solid var(--brand); padding: 16px 20px; margin-top: 22px; color: #3E3E4A; box-shadow: 0 4px 16px rgba(20, 20, 40, .06); }
+    .msg.micro { border-left-color: var(--green); }
+    .result .actions { margin-top: 28px; }
+    details.legal-box { max-width: 1060px; margin: 26px auto 0; background: var(--white); border-radius: 10px; padding: 16px 20px; box-shadow: 0 2px 10px rgba(20, 20, 40, .05); }
+    details.legal-box summary { font-weight: 700; cursor: pointer; }
+    details.legal-box p { font-size: 0.86rem; color: var(--muted); margin-top: 10px; }
+
+    .error-box { display: none; max-width: 760px; margin: 0 auto 30px; padding: 14px 18px; border-radius: 10px; background: var(--red-soft); color: var(--red); font-size: 0.92rem; }
+    footer { text-align: center; font-size: 0.78rem; color: #8A8A99; padding: 0 24px 30px; }
+
+    @media (max-width: 760px) {
+      .feats { grid-template-columns: 1fr 1fr; row-gap: 20px; }
+      .grid { grid-template-columns: 1fr; }
+      .cards { grid-template-columns: 1fr; }
+      .money input { font-size: 1.9rem; }
+      .money span { font-size: 1.7rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="topbar">
+    <div class="in">
+      <div class="logo"><i class="mark" aria-hidden="true"></i><span class="txt">MiCredito<span>YA</span></span></div>
+      <div class="top-link"><b aria-hidden="true"></b>Motor D-IA</div>
+    </div>
+  </header>
+
+  <section class="hero">
+    <h1>Simulador de Crédito de Libre Inversión</h1>
+    <p>Calcula el monto que te podemos prestar y el valor aproximado de tu cuota según tus ingresos y tu capacidad de pago.</p>
+  </section>
+
+  <section class="band" aria-label="Características">
+    <h2>Características</h2>
+    <div class="feats">
+      <div class="feat">
+        <svg viewBox="0 0 40 40" aria-hidden="true"><rect x="5" y="10" width="30" height="20" rx="2"/><circle cx="20" cy="20" r="4"/><path d="M9 14h2M29 26h2"/></svg>
+        <small>Monto mínimo</small><strong>$500.000</strong>
+      </div>
+      <div class="feat">
+        <svg viewBox="0 0 40 40" aria-hidden="true"><rect x="6" y="8" width="28" height="26" rx="2"/><path d="M6 15h28M13 5v6M27 5v6"/><circle cx="13" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><circle cx="27" cy="21" r="1"/><circle cx="13" cy="28" r="1"/><circle cx="20" cy="28" r="1"/></svg>
+        <small>Plazo entre</small><strong>12 y 360 meses</strong>
+      </div>
+      <div class="feat">
+        <svg viewBox="0 0 40 40" aria-hidden="true"><path d="M20 5l12 5v9c0 8-5 13-12 16C13 32 8 27 8 19v-9z"/><path d="M15 20l4 4 7-8"/></svg>
+        <small>Tu cuota protegida</small><strong>Máximo 30 % del ingreso</strong>
+      </div>
+      <div class="feat">
+        <svg viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="21" r="13"/><path d="M20 13v8l5 4M16 4h8"/></svg>
+        <small>Respuesta</small><strong>En segundos</strong>
+      </div>
+    </div>
+    <p class="legal">Simulación sujeta a estudio de crédito y a las políticas de MiCreditoYA.</p>
+  </section>
+
+  <main class="wrap" id="formulario">
+    <form id="credit-form" novalidate>
+      <p class="step">Paso 1 de 2</p>
+      <h2 class="q">¿Cuánto dinero necesitas?</h2>
+      <label class="money" for="requested">
+        <span>$</span>
+        <input type="text" inputmode="numeric" id="requested" autocomplete="off" placeholder="10.000.000" aria-describedby="help-requested">
+      </label>
+      <p class="help" id="help-requested">Monto mínimo: $500.000</p>
+
+      <div class="grid">
+        <div class="field">
+          <label for="nombre">Tu nombre</label>
+          <input type="text" id="nombre" placeholder="Ej. Iván" autocomplete="given-name">
+        </div>
+        <div class="field">
+          <label for="ocupacion">Ocupación</label>
+          <select id="ocupacion">
+            <option value="Estudiante">Estudiante</option>
+            <option value="Empleado" selected>Empleado</option>
+            <option value="Independiente">Independiente</option>
+            <option value="Empresario">Empresario</option>
+            <option value="Pensionado">Pensionado</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="income">Ingresos mensuales</label>
+          <div class="money-sm"><span>$</span><input type="text" inputmode="numeric" id="income" autocomplete="off" placeholder="3.500.000" aria-describedby="help-income"></div>
+          <p class="help" id="help-income">Mínimo $500.000</p>
+        </div>
+        <div class="field">
+          <label for="term">¿A cuántos meses?</label>
+          <select id="term">
+            <option value="12">12 meses</option>
+            <option value="24">24 meses</option>
+            <option value="36" selected>36 meses</option>
+            <option value="60">60 meses</option>
+            <option value="180">180 meses</option>
+            <option value="360">360 meses</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="dependents">Personas a cargo</label>
+          <select id="dependents">
+            <option value="0">0</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3 o más</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="area">Zona de residencia</label>
+          <select id="area">
+            <option value="Urban">Urbana</option>
+            <option value="Semiurban">Semiurbana</option>
+            <option value="Rural">Rural</option>
+          </select>
+        </div>
+        <div class="field full demo-field">
+          <label for="historial">Historial crediticio <span class="tag-demo">Simulación</span></label>
+          <select id="historial">
+            <option value="aleatorio">Aleatorio (consulta simulada a central de riesgo)</option>
+            <option value="1">Positivo</option>
+            <option value="0">En mora</option>
+          </select>
+          <p class="help">En un banco real este dato llega de la central de riesgo; aquí se elige para la demostración.</p>
+        </div>
+      </div>
+
+      <div class="actions">
+        <button type="submit" class="btn" id="submit-btn">Simular</button>
+      </div>
+    </form>
+
+    <div class="loader" id="loader">
+      <div class="spinner"></div>
+      <p>Consultando centrales de riesgo y evaluando tu perfil...</p>
+    </div>
+  </main>
+
+  <div class="error-box" id="error-box" role="alert"></div>
+
+  <section class="result" id="result" aria-live="polite">
+    <div class="intro">
+      <p class="step">Paso 2 de 2</p>
+      <span class="pill ok" id="result-tag">Crédito principal preaprobado</span>
+      <h2 id="result-title">Te ofrecemos esta opción de crédito</h2>
+      <p id="result-sub"></p>
+    </div>
+    <div class="cards">
+      <div class="card main">
+        <div class="head" id="card1-head">Monto aprobado</div>
+        <div class="body"><p class="lbl">Por un crédito de:</p><p class="val" id="result-amount">$0</p></div>
+        <div class="box"><p id="cuota-txt">Pagarías cuotas mensuales por un valor aproximado de</p><p class="big" id="result-cuota">$0</p></div>
+        <div class="foot">Cuota estimada sin intereses</div>
+      </div>
+      <div class="card">
+        <div class="head">Tu cupo</div>
+        <div class="body"><p class="lbl">Cupo máximo disponible:</p><p class="val" id="result-cupo">$0</p></div>
+        <div class="box"><p>Lo que solicitaste</p><p class="big" id="result-req">$0</p></div>
+        <div class="foot">El cupo cuida que la cuota no supere el 30 % de tus ingresos</div>
+      </div>
+      <div class="card">
+        <div class="head">Tu evaluación</div>
+        <div class="body"><p class="lbl">Central de riesgo (simulada):</p><p class="val" id="result-credit">Positivo</p></div>
+        <div class="box"><p>Tu cuota frente a tus ingresos</p><p class="big" id="result-rel">0 %</p></div>
+        <div class="foot">Evaluado por un árbol de decisión</div>
+      </div>
+    </div>
+    <div class="msg" id="result-msg"></div>
+    <div class="actions"><button type="button" class="btn sec" id="again-btn">Nueva simulación</button></div>
+    <details class="legal-box">
+      <summary>Información legal</summary>
+      <p>Proyecto académico. El resultado es una simulación generada por un modelo de árbol de decisión entrenado con el dataset público Loan Prediction (Kaggle) y una regla de negocio de capacidad de pago. El historial crediticio se simula y la cuota no incluye intereses. No constituye una oferta de crédito.</p>
+    </details>
+  </section>
+
+  <footer id="pie-api">Backend FastAPI</footer>
+
+  <script src="config.js"></script>
+  <script>
+    // ---- Dirección de la API: local al abrir el archivo en el computador; en línea al publicarlo ----
+    const ES_LOCAL = location.protocol === 'file:' || ['localhost', '127.0.0.1'].includes(location.hostname);
+    const API_BASE = (ES_LOCAL ? 'http://127.0.0.1:8000' : (window.MICREDITOYA_API || 'http://127.0.0.1:8000')).replace(/\/$/, '');
+    document.getElementById('pie-api').textContent = 'Backend FastAPI · ' + API_BASE + '/predict';
+
+    // Estado del motor (el servidor gratuito se apaga cuando no se usa; esta consulta lo despierta)
+    const estado = document.querySelector('.top-link');
+    function ponerEstado(txt, color) { estado.innerHTML = `<b aria-hidden="true" style="background:${color}"></b>${txt}`; }
+    ponerEstado('Motor D-IA · conectando…', '#B0B0BC');
+    fetch(API_BASE + '/openapi.json').then(r => {
+      ponerEstado(r.ok ? 'Motor D-IA · en línea' : 'Motor D-IA · sin conexión', r.ok ? 'var(--green)' : 'var(--red)');
+    }).catch(() => ponerEstado('Motor D-IA · sin conexión', 'var(--red)'));
+
+    const form = document.getElementById('credit-form');
+    const loader = document.getElementById('loader');
+    const result = document.getElementById('result');
+    const errorBox = document.getElementById('error-box');
+    const submitBtn = document.getElementById('submit-btn');
+    const MINIMO = 500000;
+
+    // ---- Formato de miles y millones mientras se escribe (1.500.000) ----
+    const soloDigitos = v => v.replace(/\D/g, '');
+    const conPuntos = d => d ? Number(d).toLocaleString('es-CO', { maximumFractionDigits: 0 }) : '';
+    const valorDe = id => Number(soloDigitos(document.getElementById(id).value)) || 0;
+
+    function formatearCampo(input) {
+      const antes = input.value;
+      const pos = input.selectionStart ?? antes.length;
+      const digitosAntesDelCursor = soloDigitos(antes.slice(0, pos)).length;
+      const d = soloDigitos(antes).replace(/^0+(?=\d)/, '').slice(0, 13);
+      input.value = conPuntos(d);
+      // Recolocar el cursor después del mismo número de dígitos
+      let vistos = 0, nueva = input.value.length;
+      for (let i = 0; i < input.value.length; i++) {
+        if (vistos === digitosAntesDelCursor) { nueva = i; break; }
+        if (/\d/.test(input.value[i])) vistos++;
+      }
+      if (digitosAntesDelCursor === 0) nueva = 0;
+      input.setSelectionRange(nueva, nueva);
+    }
+    ['requested', 'income'].forEach(id => {
+      const el = document.getElementById(id);
+      el.addEventListener('input', () => { formatearCampo(el); limpiarError(id); });
+    });
+
+    function formatCOP(value) {
+      return '$' + Math.round(Number(value)).toLocaleString('es-CO');
+    }
+
+    function marcarError(id, texto) {
+      const h = document.getElementById('help-' + id);
+      h.textContent = texto; h.classList.add('err');
+    }
+    function limpiarError(id) {
+      const h = document.getElementById('help-' + id);
+      h.classList.remove('err');
+      h.textContent = id === 'requested' ? 'Monto mínimo: $500.000' : 'Mínimo $500.000';
+    }
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const monto = valorDe('requested'), ingreso = valorDe('income');
+      let valido = true;
+      if (monto < MINIMO) { marcarError('requested', 'Ingresa un monto de al menos $500.000'); valido = false; }
+      if (ingreso < MINIMO) { marcarError('income', 'Ingresa ingresos de al menos $500.000'); valido = false; }
+      if (!valido) return;
+
+      result.style.display = 'none';
+      errorBox.style.display = 'none';
+      form.style.display = 'none';
+      loader.style.display = 'block';
+      submitBtn.disabled = true;
+
+      // Simulacion de consulta automatica a central de riesgo (0 o 1)
+      // (selector de la demo: Positivo / En mora / Aleatorio)
+      const histSel = document.getElementById('historial').value;
+      const simulatedCreditHistory = histSel === 'aleatorio' ? (Math.random() < 0.75 ? 1 : 0) : Number(histSel);
+
+      const payload = {
+        Nombre: document.getElementById('nombre').value.trim() || 'Cliente',
+        Ocupacion: document.getElementById('ocupacion').value,
+        MontoSolicitado: monto,
+        ApplicantIncome: ingreso,
+        CoapplicantIncome: 0.0,
+        Dependents: parseInt(document.getElementById('dependents').value, 10),
+        Loan_Amount_Term: parseFloat(document.getElementById('term').value),
+        Credit_History: simulatedCreditHistory,
+        Property_Area: document.getElementById('area').value
+      };
+
+      let aviso;
+      try {
+        await new Promise(resolve => setTimeout(resolve, 1500));
+        aviso = setTimeout(() => {
+          loader.querySelector('p').textContent = 'El servidor se está activando, puede tardar hasta un minuto la primera vez...';
+        }, 6000);
+
+        const response = await fetch(API_BASE + '/predict', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        if (!response.ok) throw new Error('Error en la respuesta del servidor FastAPI.');
+        const data = await response.json();
+
+        const isMicro = data.tipo_aprobacion === 'MICROCREDITO_RETENCION';
+        const plazo = isMicro ? Math.min(payload.Loan_Amount_Term, 12) : payload.Loan_Amount_Term;
+        const tag = document.getElementById('result-tag');
+        tag.className = 'pill ' + (isMicro ? 'micro' : 'ok');
+        tag.textContent = isMicro ? 'Microcrédito de retención' : 'Crédito principal preaprobado';
+        document.getElementById('result-title').textContent = isMicro
+          ? 'Te ofrecemos un microcrédito para empezar'
+          : 'Te ofrecemos esta opción de crédito';
+        document.getElementById('result-sub').textContent = isMicro
+          ? 'Con este crédito construyes historial y luego puedes acceder a montos mayores.'
+          : (data.monto_aprobado_cop < payload.MontoSolicitado
+              ? 'Ajustamos el monto a tu capacidad de pago.'
+              : 'Te aprobamos el monto que solicitaste.');
+        document.getElementById('card1-head').textContent = isMicro ? 'Microcrédito' : 'Crédito principal';
+        document.getElementById('result-amount').textContent = formatCOP(data.monto_aprobado_cop);
+        document.getElementById('cuota-txt').textContent = `Pagarías ${plazo} cuotas mensuales por un valor aproximado de`;
+        document.getElementById('result-cuota').textContent = formatCOP(data.cuota_estimada_cop);
+        document.getElementById('result-cupo').textContent = formatCOP(data.cupo_maximo_cop);
+        document.getElementById('result-req').textContent = formatCOP(payload.MontoSolicitado);
+        document.getElementById('result-credit').textContent = simulatedCreditHistory === 1 ? 'Positivo' : 'En mora';
+        document.getElementById('result-rel').textContent = String(data.relacion_cuota_ingreso).replace('.', ',') + ' %';
+        const msg = document.getElementById('result-msg');
+        msg.className = 'msg' + (isMicro ? ' micro' : '');
+        msg.textContent = data.mensaje;
+
+        result.style.display = 'block';
+        result.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      } catch (err) {
+        errorBox.textContent = ES_LOCAL
+          ? 'No se pudo conectar con el backend local. Asegúrate de haber iniciado FastAPI con: python3 -m uvicorn main:app --reload'
+          : 'No se pudo conectar con el servidor en línea. Espera unos segundos e inténtalo de nuevo.';
+        errorBox.style.display = 'block';
+        form.style.display = 'block';
+      } finally {
+        clearTimeout(aviso);
+        loader.querySelector('p').textContent = 'Consultando centrales de riesgo y evaluando tu perfil...';
+        loader.style.display = 'none';
+        submitBtn.disabled = false;
+      }
+    });
+
+    document.getElementById('again-btn').addEventListener('click', () => {
+      result.style.display = 'none';
+      form.style.display = 'block';
+      document.getElementById('formulario').scrollIntoView({ behavior: 'smooth' });
+    });
+  </script>
+</body>
+</html>

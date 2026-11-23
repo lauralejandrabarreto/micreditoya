@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MiCreditoYA</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--paper:#FAFAF7;--ink:#16181D;--muted:#5B6070;--soft:#8A8F9C;--rule:#DADCE0;--s1:#2E4BB5;--s3:#1F7A5C;--brand:#820AD1;--bronce:#A0592A;--plata:#6E7B88;--oro:#B8860B}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--paper);color:var(--ink);font-family:'IBM Plex Sans',system-ui,sans-serif;line-height:1.5}
+.w{max-width:1040px;margin:0 auto;padding:0 24px}
+.top{display:flex;justify-content:space-between;align-items:baseline;border-bottom:1px solid var(--rule);padding:22px 0 12px;font-family:'IBM Plex Mono',monospace;font-size:.75rem;color:var(--soft);text-transform:uppercase;letter-spacing:.5px}
+.top b{color:var(--ink);font-weight:500}
+header{padding:70px 0 40px}
+header p.ov{font-family:'IBM Plex Mono',monospace;font-size:.78rem;color:var(--soft);text-transform:uppercase;letter-spacing:.6px;margin-bottom:16px}
+h1{font-size:clamp(2.8rem,7vw,4.6rem);font-weight:700;letter-spacing:-2px;line-height:1}
+header p.sub{font-size:1.15rem;color:var(--muted);max-width:640px;margin-top:18px}
+.franja{display:flex;height:6px;max-width:260px;margin-top:26px}.franja i{flex:1}
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;padding-bottom:50px}
+.card{display:block;text-decoration:none;color:inherit;background:#fff;border:1px solid var(--rule);border-top:4px solid var(--c);padding:22px 22px 24px;transition:transform .2s,box-shadow .2s}
+.card:hover{transform:translateY(-3px);box-shadow:0 8px 22px rgba(20,20,40,.08)}
+.card:focus-visible{outline:2px solid var(--ink);outline-offset:3px}
+.card .k{font-family:'IBM Plex Mono',monospace;font-size:.72rem;color:var(--c);text-transform:uppercase;letter-spacing:.5px}
+.card h2{font-size:1.35rem;font-weight:600;margin:6px 0 6px}
+.card p{font-size:.92rem;color:var(--muted)}
+.card span.go{display:inline-block;margin-top:14px;font-weight:600;color:var(--c)}
+.card svg{width:40px;height:40px;fill:none;stroke:var(--c);stroke-width:2;stroke-linecap:round;stroke-linejoin:round;margin-bottom:10px}
+section.info{border-top:1.5px solid var(--ink);padding:26px 0 60px;display:grid;grid-template-columns:repeat(3,1fr);gap:28px}
+section.info h3{font-family:'IBM Plex Mono',monospace;font-size:.72rem;color:var(--soft);text-transform:uppercase;letter-spacing:.5px;font-weight:500;margin-bottom:8px}
+section.info p,section.info li{font-size:.92rem;color:var(--muted)}
+section.info ul{list-style:none}section.info li{padding:3px 0}
+code{font-family:'IBM Plex Mono',monospace;font-size:.85em;background:#EFEFEA;padding:1px 5px}
+footer{border-top:1px solid var(--rule);padding:14px 0 30px;font-family:'IBM Plex Mono',monospace;font-size:.72rem;color:var(--soft)}
+@media(max-width:760px){.cards,section.info{grid-template-columns:1fr}header{padding:46px 0 30px}}
+</style>
+</head>
+<body>
+<div class="w">
+ <div class="top"><span><b>MiCreditoYA</b> · Sustentación final</span><span>Google data y modelo supervisado</span></div>
+ <header>
+  <p class="ov">Árboles de decisión · Arquitectura Medallón</p>
+  <h1>MiCreditoYA</h1>
+  <p class="sub">Simulador de crédito basado en un árbol de decisión de regresión, construido sobre una arquitectura Medallón con el dataset Loan Prediction de Kaggle.</p>
+  <div class="franja"><i style="background:var(--bronce)"></i><i style="background:var(--plata)"></i><i style="background:var(--oro)"></i></div>
+ </header>
+ <div class="cards">
+  <a class="card" href="presentacion/" style="--c:var(--s1)">
+   <svg viewBox="0 0 48 48"><rect x="6" y="8" width="36" height="24" rx="2"/><path d="M24 32v8M16 40h16M13 25l7-7 5 5 9-9"/></svg>
+   <p class="k">01</p><h2>Presentación</h2><p>Sustentación en tres segmentos: definición, arquitectura Medallón e implementación.</p><span class="go">Abrir →</span>
+  </a>
+  <a class="card" href="simulador/" style="--c:var(--brand)">
+   <svg viewBox="0 0 48 48"><rect x="10" y="6" width="28" height="36" rx="3"/><path d="M16 15h16M16 22h16M16 29h10"/><path d="M28 34l3 3 6-7"/></svg>
+   <p class="k">02</p><h2>Simulador</h2><p>MiCreditoYA en línea: el formulario consulta la API con el modelo entrenado.</p><span class="go">Probar →</span>
+  </a>
+  <a class="card" id="codigo" href="#" style="--c:var(--s3)">
+   <svg viewBox="0 0 48 48"><path d="M17 14L7 24l10 10M31 14l10 10-10 10M27 10l-6 28"/></svg>
+   <p class="k">03</p><h2>Código</h2><p>Repositorio con los datos por capa, los scripts, el entrenamiento y la API.</p><span class="go">Ver en GitHub →</span>
+  </a>
+ </div>
+ <section class="info">
+  <div><h3>Capas</h3><ul><li><b style="color:var(--bronce)">Bronce</b> · datos crudos de Kaggle</li><li><b style="color:var(--plata)">Plata</b> · datos limpios y validados</li><li><b style="color:var(--oro)">Oro</b> · indicadores listos para consumo</li></ul></div>
+  <div><h3>Modelo</h3><p><code>DecisionTreeRegressor</code> (profundidad 5) más una regla de capacidad de pago del 30 % y una política de microcrédito.</p></div>
+  <div><h3>Tecnologías</h3><p>Python · pandas · scikit-learn · FastAPI · HTML y JavaScript · GitHub Pages · Render</p></div>
+ </section>
+ <footer>Proyecto académico. Datos: Kaggle — Loan Prediction Problem Dataset.</footer>
+</div>
+<script>
+// Enlace al repositorio calculado a partir de la dirección de GitHub Pages (usuario.github.io/repositorio)
+(function(){const h=location.hostname,a=document.getElementById('codigo');
+ if(h.endsWith('.github.io')){const u=h.split('.')[0],r=location.pathname.split('/').filter(Boolean)[0];a.href='https://github.com/'+u+(r?'/'+r:'');}
+ else{a.href='https://github.com';}})();
+</script>
+</body>
+</html>
